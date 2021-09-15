@@ -5,33 +5,33 @@
 class GoC8yCli < Formula
   desc "Cumulocity's unofficial command line tool"
   homepage "https://goc8ycli.netlify.app/"
-  version "2.2.0"
+  version "2.2.1"
   license "MIT"
   bottle :unneeded
 
   on_macos do
     if Hardware::CPU.intel?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.2.0/c8y_2.2.0_macOS_amd64.tar.gz"
-      sha256 "879da4e9a509de39e7d0ec324708d673346ea9ef840b1cb5a145afb5683fd67e"
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.2.1/c8y_2.2.1_macOS_amd64.tar.gz"
+      sha256 "792d9bcc16030e5e12bb9470d9c48559747f015eeb583e5d533bf1e1c4672e56"
     end
     if Hardware::CPU.arm?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.2.0/c8y_2.2.0_macOS_arm64.tar.gz"
-      sha256 "c99ac2dd175ab5bfa6be1a64d2b1199b0dfd795c8eba0c6935850c057bc73175"
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.2.1/c8y_2.2.1_macOS_arm64.tar.gz"
+      sha256 "7f09c28d8f9becd258cd517d2443cd9c4d94630ae8ce74893e220684c11c949a"
     end
   end
 
   on_linux do
     if Hardware::CPU.intel?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.2.0/c8y_2.2.0_linux_amd64.tar.gz"
-      sha256 "b7a300282c2220b68df69e20d24fedbb2ec4449406541392e304a9de10d7fe2e"
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.2.1/c8y_2.2.1_linux_amd64.tar.gz"
+      sha256 "c38c5c0bb8f5325ea6072081c0f64f37b97a893054714109dcebb7c0d9a1ae52"
     end
     if Hardware::CPU.arm? && !Hardware::CPU.is_64_bit?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.2.0/c8y_2.2.0_linux_armv6.tar.gz"
-      sha256 "69388ab4fc0f4043f28f12c8ff5fd4a0ad56e3758d7d372ef62509eba3c5a7b7"
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.2.1/c8y_2.2.1_linux_armv6.tar.gz"
+      sha256 "9a51ad466b3b129f300a5c623a6a02d3a618a554f490c1117b327d7bf7993905"
     end
     if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.2.0/c8y_2.2.0_linux_arm64.tar.gz"
-      sha256 "f3f1fff1a2fd8ff0f7d132ec4ffd286c20c1717db4d4193af6d3737804cee651"
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.2.1/c8y_2.2.1_linux_arm64.tar.gz"
+      sha256 "fb678f801c8061801c1654f8dfb986e4886e441f53140241b6a8e1874b2f22a2"
     end
   end
 
