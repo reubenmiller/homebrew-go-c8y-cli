@@ -5,33 +5,62 @@
 class GoC8yCli < Formula
   desc "Cumulocity's unofficial command line tool"
   homepage "https://goc8ycli.netlify.app/"
-  version "2.4.5"
+  version "2.5.0"
   license "MIT"
-  bottle :unneeded
+  depends_on :macos
 
   on_macos do
     if Hardware::CPU.intel?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.4.5/c8y_2.4.5_macOS_amd64.tar.gz"
-      sha256 "0e55337c60bb8d12d01c2d55eeb20935961c0f1706777f86d21a7d0cdad4d3b0"
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.5.0/c8y_2.5.0_macOS_amd64.tar.gz"
+      sha256 "05b3d9727795eba86acb93c632e01cd5fb926c0621afd3a7f4914aa7d572bb1b"
+
+      def install
+        bin.install "bin/c8y"
+        man1.install Dir["share/man/man1/*"]
+
+        config_dir = etc/"go-c8y-cli"
+
+        if config_dir.exist?
+          # FileUtils.rm_r etc/"go-c8y-cli"
+          system "git", "-C", config_dir, "pull", "--ff-only"
+        else
+          system "git", "clone", "--depth", "1", "https://github.com/reubenmiller/go-c8y-cli-addons.git", config_dir
+        end
+
+        # Add completions
+        output = Utils.safe_popen_read({ "SHELL" => "bash" }, "#{bin}/c8y", "completion", "bash")
+        (bash_completion/"c8y").write output
+        output = Utils.safe_popen_read({ "SHELL" => "zsh" }, "#{bin}/c8y", "completion", "zsh")
+        (zsh_completion/"_c8y").write output
+        output = Utils.safe_popen_read({ "SHELL" => "fish" }, "#{bin}/c8y", "completion", "fish")
+        (fish_completion/"c8y.fish").write output
+      end
     end
     if Hardware::CPU.arm?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.4.5/c8y_2.4.5_macOS_arm64.tar.gz"
-      sha256 "668e30b0cf8a7644c4b083129a97e431df6fd2a09c2dd9e50d22ff260fd0e59b"
-    end
-  end
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.5.0/c8y_2.5.0_macOS_arm64.tar.gz"
+      sha256 "f2f0ab9dd87a792c12c6d18671d6c47e8039f002f98c912e53df6594d9a4df51"
 
-  on_linux do
-    if Hardware::CPU.arm? && !Hardware::CPU.is_64_bit?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.4.5/c8y_2.4.5_linux_armv6.tar.gz"
-      sha256 "3fad58ce0009ec69c32ae242c2680ca1529dc88fdb572403493145b32e80ba38"
-    end
-    if Hardware::CPU.intel?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.4.5/c8y_2.4.5_linux_amd64.tar.gz"
-      sha256 "98041a73a9d762916667d995f43e72a5258c767ea9d399b5ac0b2e53bc848c7f"
-    end
-    if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.4.5/c8y_2.4.5_linux_arm64.tar.gz"
-      sha256 "a27e2e764174c63a24963f11c3f5b9617009723c90a9e08f06a1f0cecec12d0a"
+      def install
+        bin.install "bin/c8y"
+        man1.install Dir["share/man/man1/*"]
+
+        config_dir = etc/"go-c8y-cli"
+
+        if config_dir.exist?
+          # FileUtils.rm_r etc/"go-c8y-cli"
+          system "git", "-C", config_dir, "pull", "--ff-only"
+        else
+          system "git", "clone", "--depth", "1", "https://github.com/reubenmiller/go-c8y-cli-addons.git", config_dir
+        end
+
+        # Add completions
+        output = Utils.safe_popen_read({ "SHELL" => "bash" }, "#{bin}/c8y", "completion", "bash")
+        (bash_completion/"c8y").write output
+        output = Utils.safe_popen_read({ "SHELL" => "zsh" }, "#{bin}/c8y", "completion", "zsh")
+        (zsh_completion/"_c8y").write output
+        output = Utils.safe_popen_read({ "SHELL" => "fish" }, "#{bin}/c8y", "completion", "fish")
+        (fish_completion/"c8y.fish").write output
+      end
     end
   end
 
@@ -40,28 +69,6 @@ class GoC8yCli < Formula
   depends_on "zsh" => :optional
   depends_on "bash" => :optional
   depends_on "fish" => :optional
-
-  def install
-    bin.install "bin/c8y"
-    man1.install Dir["share/man/man1/*"]
-
-    config_dir = etc/"go-c8y-cli"
-
-    if config_dir.exist?
-      # FileUtils.rm_r etc/"go-c8y-cli"
-      system "git", "-C", config_dir, "pull", "--ff-only"
-    else
-      system "git", "clone", "--depth", "1", "https://github.com/reubenmiller/go-c8y-cli-addons.git", config_dir
-    end
-
-    # Add completions
-    output = Utils.safe_popen_read({ "SHELL" => "bash" }, "#{bin}/c8y", "completion", "bash")
-    (bash_completion/"c8y").write output
-    output = Utils.safe_popen_read({ "SHELL" => "zsh" }, "#{bin}/c8y", "completion", "zsh")
-    (zsh_completion/"_c8y").write output
-    output = Utils.safe_popen_read({ "SHELL" => "fish" }, "#{bin}/c8y", "completion", "fish")
-    (fish_completion/"c8y.fish").write output
-  end
 
   def caveats; <<~EOS
     Please add the following to your shell profile to enable usage of "set-session" and other helpful c8y utility functions
