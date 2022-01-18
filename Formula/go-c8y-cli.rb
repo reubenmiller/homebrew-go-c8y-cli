@@ -5,14 +5,14 @@
 class GoC8yCli < Formula
   desc "Cumulocity's unofficial command line tool"
   homepage "https://goc8ycli.netlify.app/"
-  version "2.5.0"
+  version "2.5.1"
   license "MIT"
   depends_on :macos
 
   on_macos do
     if Hardware::CPU.intel?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.5.0/c8y_2.5.0_macOS_amd64.tar.gz"
-      sha256 "05b3d9727795eba86acb93c632e01cd5fb926c0621afd3a7f4914aa7d572bb1b"
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.5.1/c8y_2.5.1_macOS_amd64.tar.gz"
+      sha256 "cf310de0278c1b39873a487aed240fc9e84e32b800f6627e4b95bd2fe689c8df"
 
       def install
         bin.install "bin/c8y"
@@ -37,8 +37,8 @@ class GoC8yCli < Formula
       end
     end
     if Hardware::CPU.arm?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.5.0/c8y_2.5.0_macOS_arm64.tar.gz"
-      sha256 "f2f0ab9dd87a792c12c6d18671d6c47e8039f002f98c912e53df6594d9a4df51"
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.5.1/c8y_2.5.1_macOS_arm64.tar.gz"
+      sha256 "e8636ceff95e0e56cdbecca04ceb9b612ae7b54655e605ee6bcec82137dedae5"
 
       def install
         bin.install "bin/c8y"
