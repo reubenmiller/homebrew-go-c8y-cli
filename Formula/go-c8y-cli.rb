@@ -5,13 +5,19 @@
 class GoC8yCli < Formula
   desc "Cumulocity's unofficial command line tool"
   homepage "https://goc8ycli.netlify.app/"
-  version "2.15.2"
+  version "2.16.0"
   license "MIT"
+
+  depends_on "git" => :optional
+  depends_on "jq" => :optional
+  depends_on "zsh" => :optional
+  depends_on "bash" => :optional
+  depends_on "fish" => :optional
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.15.2/c8y_2.15.2_macOS_arm64.tar.gz"
-      sha256 "5d28622044d33eb603bffb602c84adebc809c47ff84f31ab416e96cf1b7930e0"
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.16.0/c8y_2.16.0_macOS_arm64.tar.gz"
+      sha256 "34389bd7d94e35d965e1fd8a2b5dc5c067f0822ab36f88f7495e4401efd6b6e7"
 
       def install
         bin.install "bin/c8y"
@@ -36,8 +42,8 @@ class GoC8yCli < Formula
       end
     end
     if Hardware::CPU.intel?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.15.2/c8y_2.15.2_macOS_amd64.tar.gz"
-      sha256 "ee5ecbfc34aa08f0609a80b7c493e9d61dddc0d08295d7639b5e197134412227"
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.16.0/c8y_2.16.0_macOS_amd64.tar.gz"
+      sha256 "0277a5d551f07bb88c053f74176e2d811fecc9a78b445dc570250851404bcc72"
 
       def install
         bin.install "bin/c8y"
@@ -64,9 +70,9 @@ class GoC8yCli < Formula
   end
 
   on_linux do
-    if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.15.2/c8y_2.15.2_linux_arm64.tar.gz"
-      sha256 "56b2ccd4d174526c03a7796f430488ffe0d098bbe0bdf591345dc3c1f917d893"
+    if Hardware::CPU.arm? && !Hardware::CPU.is_64_bit?
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.16.0/c8y_2.16.0_linux_armv6.tar.gz"
+      sha256 "e00bfe12f3f1dfcfbd4c4c8f9ec2bba153ce4b6962464872909ddf2e80c34b03"
 
       def install
         bin.install "bin/c8y"
@@ -90,9 +96,9 @@ class GoC8yCli < Formula
         (fish_completion/"c8y.fish").write output
       end
     end
-    if Hardware::CPU.arm? && !Hardware::CPU.is_64_bit?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.15.2/c8y_2.15.2_linux_armv6.tar.gz"
-      sha256 "c26aedded0fcfc923d96ae0a7f3169a45340d1435aaf1b65ebc62d7530a55323"
+    if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.16.0/c8y_2.16.0_linux_arm64.tar.gz"
+      sha256 "8fb6db3e8b10a431f9641ff9d883284fb59f2ec28f177ba2d38961cc3852f4cd"
 
       def install
         bin.install "bin/c8y"
@@ -117,8 +123,8 @@ class GoC8yCli < Formula
       end
     end
     if Hardware::CPU.intel?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.15.2/c8y_2.15.2_linux_amd64.tar.gz"
-      sha256 "3680fbaa9c39a60493d08b207bc4de399192e440ad9dd2c88400ca6c2d5d1aa8"
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.16.0/c8y_2.16.0_linux_amd64.tar.gz"
+      sha256 "3673862f2ab5e7136115c6374224b9c5b1c838fae42c91bc8c64abf00b05e89f"
 
       def install
         bin.install "bin/c8y"
@@ -144,34 +150,29 @@ class GoC8yCli < Formula
     end
   end
 
-  depends_on "git" => :optional
-  depends_on "jq" => :optional
-  depends_on "zsh" => :optional
-  depends_on "bash" => :optional
-  depends_on "fish" => :optional
+  def caveats
+    <<~EOS
+      Please add the following to your shell profile to enable usage of "set-session" and other helpful c8y utility functions
 
-  def caveats; <<~EOS
-    Please add the following to your shell profile to enable usage of "set-session" and other helpful c8y utility functions
+      bash: ~/.bashrc
 
-    bash: ~/.bashrc
+        source "#{etc}/go-c8y-cli/shell/c8y.plugin.sh"
 
-      source "#{etc}/go-c8y-cli/shell/c8y.plugin.sh"
+      zsh: ~/.zshrc
 
-    zsh: ~/.zshrc
+        source "#{etc}/go-c8y-cli/shell/c8y.plugin.zsh"
 
-      source "#{etc}/go-c8y-cli/shell/c8y.plugin.zsh"
+      fish: ~/.config/fish/config.fish
 
-    fish: ~/.config/fish/config.fish
+        source "#{etc}/go-c8y-cli/shell/c8y.plugin.fish"
 
-      source "#{etc}/go-c8y-cli/shell/c8y.plugin.fish"
+      powershell: ~/.config/powershell/Microsoft.PowerShell_profile.ps1
+        . "#{etc}/go-c8y-cli/shell/c8y.plugin.ps1"
 
-    powershell: ~/.config/powershell/Microsoft.PowerShell_profile.ps1
-      . "#{etc}/go-c8y-cli/shell/c8y.plugin.ps1"
+      You will also need to force reload of your profile:
 
-    You will also need to force reload of your profile:
-
-      source <profile>
-  EOS
+        source <profile>
+    EOS
   end
 
   test do
