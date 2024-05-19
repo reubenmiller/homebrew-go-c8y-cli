@@ -5,7 +5,7 @@
 class GoC8yCli < Formula
   desc "Cumulocity's unofficial command line tool"
   homepage "https://goc8ycli.netlify.app/"
-  version "2.40.0"
+  version "2.41.0"
   license "MIT"
 
   depends_on "bash" => :optional
@@ -15,9 +15,9 @@ class GoC8yCli < Formula
   depends_on "zsh" => :optional
 
   on_macos do
-    if Hardware::CPU.intel?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.40.0/c8y_2.40.0_macOS_amd64.tar.gz"
-      sha256 "11f756324ad00165f4d945a5cc524e94e4b59f3732d2fcac32f56230c974598f"
+    on_intel do
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.41.0/c8y_2.41.0_macOS_amd64.tar.gz"
+      sha256 "14c11b8577f1cdc5f7699fe40810a0e545aca621c4c94ba05eb24467c084cc08"
 
       def install
         bin.install "bin/c8y"
@@ -41,9 +41,9 @@ class GoC8yCli < Formula
         (fish_completion/"c8y.fish").write output
       end
     end
-    if Hardware::CPU.arm?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.40.0/c8y_2.40.0_macOS_arm64.tar.gz"
-      sha256 "fdad579ca26fb12b298d4346328f3824248bd4bd2c46a49636caa4a66c5d552b"
+    on_arm do
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.41.0/c8y_2.41.0_macOS_arm64.tar.gz"
+      sha256 "231b26877d0232536bf6999457d647d01e0ffad17ccb1bb00c7b55482bc878e3"
 
       def install
         bin.install "bin/c8y"
@@ -70,82 +70,88 @@ class GoC8yCli < Formula
   end
 
   on_linux do
-    if Hardware::CPU.intel?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.40.0/c8y_2.40.0_linux_amd64.tar.gz"
-      sha256 "1880d9ea843cdf2df815aaf9edaeef8725c041656ab01be1220de7b97b880eb2"
+    on_intel do
+      if Hardware::CPU.is_64_bit?
+        url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.41.0/c8y_2.41.0_linux_amd64.tar.gz"
+        sha256 "6c58e162eeb28dfd5bb936d26a9ab1f81fb64d14fef2a810a7e1d2a2cfd33d69"
 
-      def install
-        bin.install "bin/c8y"
-        man1.install Dir["share/man/man1/*"]
+        def install
+          bin.install "bin/c8y"
+          man1.install Dir["share/man/man1/*"]
 
-        config_dir = etc/"go-c8y-cli"
+          config_dir = etc/"go-c8y-cli"
 
-        if config_dir.exist?
-          # FileUtils.rm_r etc/"go-c8y-cli"
-          system "git", "-C", config_dir, "pull", "--ff-only"
-        else
-          system "git", "clone", "--depth", "1", "https://github.com/reubenmiller/go-c8y-cli-addons.git", config_dir
+          if config_dir.exist?
+            # FileUtils.rm_r etc/"go-c8y-cli"
+            system "git", "-C", config_dir, "pull", "--ff-only"
+          else
+            system "git", "clone", "--depth", "1", "https://github.com/reubenmiller/go-c8y-cli-addons.git", config_dir
+          end
+
+          # Add completions
+          output = Utils.safe_popen_read({ "SHELL" => "bash" }, "#{bin}/c8y", "completion", "bash")
+          (bash_completion/"c8y").write output
+          output = Utils.safe_popen_read({ "SHELL" => "zsh" }, "#{bin}/c8y", "completion", "zsh")
+          (zsh_completion/"_c8y").write output
+          output = Utils.safe_popen_read({ "SHELL" => "fish" }, "#{bin}/c8y", "completion", "fish")
+          (fish_completion/"c8y.fish").write output
         end
-
-        # Add completions
-        output = Utils.safe_popen_read({ "SHELL" => "bash" }, "#{bin}/c8y", "completion", "bash")
-        (bash_completion/"c8y").write output
-        output = Utils.safe_popen_read({ "SHELL" => "zsh" }, "#{bin}/c8y", "completion", "zsh")
-        (zsh_completion/"_c8y").write output
-        output = Utils.safe_popen_read({ "SHELL" => "fish" }, "#{bin}/c8y", "completion", "fish")
-        (fish_completion/"c8y.fish").write output
       end
     end
-    if Hardware::CPU.arm? && !Hardware::CPU.is_64_bit?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.40.0/c8y_2.40.0_linux_armv6.tar.gz"
-      sha256 "499419c6c6949e0dcb8e876578695f28fc117ab58e09f91dbd18ba25cb4c0ab3"
+    on_arm do
+      if !Hardware::CPU.is_64_bit?
+        url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.41.0/c8y_2.41.0_linux_armv6.tar.gz"
+        sha256 "e891104e38f7019a5d72b221ce39e41154814570a12dd75c0e952562ff8d2a52"
 
-      def install
-        bin.install "bin/c8y"
-        man1.install Dir["share/man/man1/*"]
+        def install
+          bin.install "bin/c8y"
+          man1.install Dir["share/man/man1/*"]
 
-        config_dir = etc/"go-c8y-cli"
+          config_dir = etc/"go-c8y-cli"
 
-        if config_dir.exist?
-          # FileUtils.rm_r etc/"go-c8y-cli"
-          system "git", "-C", config_dir, "pull", "--ff-only"
-        else
-          system "git", "clone", "--depth", "1", "https://github.com/reubenmiller/go-c8y-cli-addons.git", config_dir
+          if config_dir.exist?
+            # FileUtils.rm_r etc/"go-c8y-cli"
+            system "git", "-C", config_dir, "pull", "--ff-only"
+          else
+            system "git", "clone", "--depth", "1", "https://github.com/reubenmiller/go-c8y-cli-addons.git", config_dir
+          end
+
+          # Add completions
+          output = Utils.safe_popen_read({ "SHELL" => "bash" }, "#{bin}/c8y", "completion", "bash")
+          (bash_completion/"c8y").write output
+          output = Utils.safe_popen_read({ "SHELL" => "zsh" }, "#{bin}/c8y", "completion", "zsh")
+          (zsh_completion/"_c8y").write output
+          output = Utils.safe_popen_read({ "SHELL" => "fish" }, "#{bin}/c8y", "completion", "fish")
+          (fish_completion/"c8y.fish").write output
         end
-
-        # Add completions
-        output = Utils.safe_popen_read({ "SHELL" => "bash" }, "#{bin}/c8y", "completion", "bash")
-        (bash_completion/"c8y").write output
-        output = Utils.safe_popen_read({ "SHELL" => "zsh" }, "#{bin}/c8y", "completion", "zsh")
-        (zsh_completion/"_c8y").write output
-        output = Utils.safe_popen_read({ "SHELL" => "fish" }, "#{bin}/c8y", "completion", "fish")
-        (fish_completion/"c8y.fish").write output
       end
     end
-    if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.40.0/c8y_2.40.0_linux_arm64.tar.gz"
-      sha256 "5f4147de830de65b9429568580ab5239f91e448a4b05e3355f9d64ef3d264922"
+    on_arm do
+      if Hardware::CPU.is_64_bit?
+        url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.41.0/c8y_2.41.0_linux_arm64.tar.gz"
+        sha256 "c3dd6a148a944b08ee7b85741f45b0ca9344265642f4cdfaf49f6512bff40d41"
 
-      def install
-        bin.install "bin/c8y"
-        man1.install Dir["share/man/man1/*"]
+        def install
+          bin.install "bin/c8y"
+          man1.install Dir["share/man/man1/*"]
 
-        config_dir = etc/"go-c8y-cli"
+          config_dir = etc/"go-c8y-cli"
 
-        if config_dir.exist?
-          # FileUtils.rm_r etc/"go-c8y-cli"
-          system "git", "-C", config_dir, "pull", "--ff-only"
-        else
-          system "git", "clone", "--depth", "1", "https://github.com/reubenmiller/go-c8y-cli-addons.git", config_dir
+          if config_dir.exist?
+            # FileUtils.rm_r etc/"go-c8y-cli"
+            system "git", "-C", config_dir, "pull", "--ff-only"
+          else
+            system "git", "clone", "--depth", "1", "https://github.com/reubenmiller/go-c8y-cli-addons.git", config_dir
+          end
+
+          # Add completions
+          output = Utils.safe_popen_read({ "SHELL" => "bash" }, "#{bin}/c8y", "completion", "bash")
+          (bash_completion/"c8y").write output
+          output = Utils.safe_popen_read({ "SHELL" => "zsh" }, "#{bin}/c8y", "completion", "zsh")
+          (zsh_completion/"_c8y").write output
+          output = Utils.safe_popen_read({ "SHELL" => "fish" }, "#{bin}/c8y", "completion", "fish")
+          (fish_completion/"c8y.fish").write output
         end
-
-        # Add completions
-        output = Utils.safe_popen_read({ "SHELL" => "bash" }, "#{bin}/c8y", "completion", "bash")
-        (bash_completion/"c8y").write output
-        output = Utils.safe_popen_read({ "SHELL" => "zsh" }, "#{bin}/c8y", "completion", "zsh")
-        (zsh_completion/"_c8y").write output
-        output = Utils.safe_popen_read({ "SHELL" => "fish" }, "#{bin}/c8y", "completion", "fish")
-        (fish_completion/"c8y.fish").write output
       end
     end
   end
