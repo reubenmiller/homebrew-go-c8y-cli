@@ -5,7 +5,7 @@
 class GoC8yCli < Formula
   desc "Cumulocity command line tool"
   homepage "https://c8y.app/"
-  version "2.57.0"
+  version "2.57.1"
   license "MIT"
 
   depends_on "bash" => :optional
@@ -16,8 +16,8 @@ class GoC8yCli < Formula
 
   on_macos do
     if Hardware::CPU.intel?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.57.0/c8y_2.57.0_macOS_amd64.tar.gz"
-      sha256 "27fd62c72dae51a8df65e5d93c1d582909494988316cb311166b2cf338a755d2"
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.57.1/c8y_2.57.1_macOS_amd64.tar.gz"
+      sha256 "ccb7c0e2f17d572baf2bee944416b4fa19da891de378dd4ea6811842ed61ac24"
 
       define_method(:install) do
         bin.install "bin/c8y"
@@ -42,8 +42,8 @@ class GoC8yCli < Formula
       end
     end
     if Hardware::CPU.arm?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.57.0/c8y_2.57.0_macOS_arm64.tar.gz"
-      sha256 "ec343886274d7a6a9bc5b6b64ec62cf4a03c96dcdd12044b5528416af597517d"
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.57.1/c8y_2.57.1_macOS_arm64.tar.gz"
+      sha256 "c08e0eece3c77cf54f4477cdcfde498e239b7645a00379809b3331800ff2ef68"
 
       define_method(:install) do
         bin.install "bin/c8y"
@@ -71,8 +71,8 @@ class GoC8yCli < Formula
 
   on_linux do
     if Hardware::CPU.intel? && Hardware::CPU.is_64_bit?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.57.0/c8y_2.57.0_linux_amd64.tar.gz"
-      sha256 "2c00bf710f5de154ab0b0b28343db742a992905f93c714fc19f4a796c61666c8"
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.57.1/c8y_2.57.1_linux_amd64.tar.gz"
+      sha256 "613fa3646071f31665dcc1cd9c70838693e7c76f1f45e96e5f4d2bcb5c67a10c"
       define_method(:install) do
         bin.install "bin/c8y"
         man1.install Dir["share/man/man1/*"]
@@ -96,8 +96,8 @@ class GoC8yCli < Formula
       end
     end
     if Hardware::CPU.arm? && !Hardware::CPU.is_64_bit?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.57.0/c8y_2.57.0_linux_armv6.tar.gz"
-      sha256 "0f26ea2cb595c3b46d6e31a372b9121e941e62a285289c1cf4fba484c440fe09"
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.57.1/c8y_2.57.1_linux_armv6.tar.gz"
+      sha256 "22e354248a6fa27fd58227dd1d5319315602e5185fc522b064c3a0f355606d5b"
       define_method(:install) do
         bin.install "bin/c8y"
         man1.install Dir["share/man/man1/*"]
@@ -121,8 +121,8 @@ class GoC8yCli < Formula
       end
     end
     if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.57.0/c8y_2.57.0_linux_arm64.tar.gz"
-      sha256 "1e68bfa55e933801874e89f64e38157519675075da4a131439411c161fc551f8"
+      url "https://github.com/reubenmiller/go-c8y-cli/releases/download/v2.57.1/c8y_2.57.1_linux_arm64.tar.gz"
+      sha256 "65e9f80128fb3656448d8ccd92da7ff272e773dce297f9288b764012829117fb"
       define_method(:install) do
         bin.install "bin/c8y"
         man1.install Dir["share/man/man1/*"]
